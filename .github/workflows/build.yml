@@ -90,10 +90,10 @@ jobs:
           nohup wasmedge --dir .:. --nn-preload default:GGML:AUTO:Qwen2-0.5B-Instruct-Q5_K_M.gguf llama-api-server.wasm --model-name Qwen2-0.5B-Instruct --prompt-template chatml --ctx-size 32000 &
 
       - name: Test localhost API
-        continue-on-error: true
+        # continue-on-error: true
         if: ${{ matrix.os == 'ubuntu-22.04' }}
         run: |
-          curl --fail -X POST http://localhost:8080/v1/chat/completions \
+          curl --fail -X POST http://localhost:9069/v1/chat/completions \
             -H 'accept: application/json' \
             -H 'Content-Type: application/json' \
             -d '{"messages":[{"role":"system", "content": "You are a helpful assistant."}, {"role":"user", "content": "What is the capital of France?"}], "model":"Qwen2-0.5B-Instruct"}'

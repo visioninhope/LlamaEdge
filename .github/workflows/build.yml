@@ -52,6 +52,11 @@ jobs:
         with:
           target: wasm32-wasi
 
+      - name: Install WasmEdge
+        run: |
+          curl -sSf https://raw.githubusercontent.com/WasmEdge/WasmEdge/master/utils/install_v2.sh | bash -s -- -v 0.13.5
+          wasmedge --version
+
       - name: Build simple
         id: build_simple
         run: |
@@ -76,10 +81,6 @@ jobs:
           cargo +nightly clippy --target wasm32-wasi -- -D warnings
           cargo build --target wasm32-wasi --release
           cp target/wasm32-wasi/release/llama-api-server.wasm .
-
-      - name: Install WasmEdge
-        run: |
-          curl -sSf https://raw.githubusercontent.com/WasmEdge/WasmEdge/master/utils/install_v2.sh | bash -s -- -v 0.13.5
 
       - name: Test llama-api-server.wasm
         if : ${{ matrix.os == 'ubuntu-22.04' }}
